@@ -1,5 +1,5 @@
 # Specify the parent image from which we build
-FROM debian:buster
+FROM	debian:buster
 
 # Set the working directory
 #WORKDIR
@@ -21,4 +21,13 @@ RUN	mkdir -p /var/run/nginx
 COPY	conf/nginx.conf /etc/nginx/nginx.conf
 
 # Ports
-EXPOSE 443:443
+EXPOSE	443:443
+
+# Rights
+RUN	chmod 755 /var/www/html
+RUN	chown -R www-data:www-data /var/www/html
+
+# Run commands
+
+# Nginx first layer so the container wont stop
+CMD	["nginx", "-g", "daemon off;"]
