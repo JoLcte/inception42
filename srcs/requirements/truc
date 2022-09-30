@@ -1,8 +1,0 @@
-here must be bonus, mariadb, nginx, tools and wordpress services
-
-in each service, we must have
-- Dockerfile
-- conf
-- .dockerignore
-- tools
-

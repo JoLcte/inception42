@@ -1,18 +1,24 @@
 # Specify the parent image from which we build
-FROM Alpine
+FROM debian:buster
 
 # Set the working directory
-WORKDIR
+#WORKDIR
 
-# Copy files from your host to your current working directory
-COPY
 
-# Build the application with cmake
-RUN 
-# example: mkdir /app/hello_zed_src/build && cd /app/hello_zed_src/build && \
- #   cmake -DCMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs \
-  #    -DCMAKE_CXX_FLAGS="-Wl,--allow-shlib-undefined" .. && \
-   # make`
+# OS Setup for next steps
+RUN	apt-get update && apt-get -y upgrade && \
+	apt-get install -y nginx vim curl openssl
 
-# Run the application
-CMD 
+# TLS certificates setup
+RUN	mkdir -p /etc/nginx/ssl && \
+	openssl req -x509 -nodes \
+	-out /etc/nginx/ssl/inception.crt \
+	-keyout /etc/nginx/ssl/inception.key \
+	-subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=jlecomte.42.fr/UID=jlecomte"
+
+# Configuration files handle
+RUN	mkdir -p /var/run/nginx
+COPY	conf/nginx.conf /etc/nginx/nginx.conf
+
+# Ports
+EXPOSE 443:443
