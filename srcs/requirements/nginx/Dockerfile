@@ -24,8 +24,8 @@ COPY	conf/nginx.conf /etc/nginx/nginx.conf
 EXPOSE	443:443
 
 # Rights
-RUN	chmod 755 /var/www/html
-RUN	chown -R www-data:www-data /var/www/html
+#RUN	chmod 755 /var/www/html
+#RUN	chown -R www-data:www-data /var/www/html
 
 # Run commands
 
