@@ -1,1 +1,50 @@
-#set up
+#version: '3.8'
+version: '3'
+services:
+
+	nginx:
+		build: requirements/nginx
+		container_name: nginx
+		ports:
+			- 443:443
+		volumes: #wordpress volume
+			- 
+		depends_on: #will create wordpress first
+			- wordpress
+		networks:
+			- inception
+		environment:
+			- .env
+		restart: always #on-failure possible
+
+	wordpress:
+		build: requirements/wordpress
+		container_name: wordpress
+		volumes:
+			-
+		depends_on:
+			- mariadb #will create mariadb first
+		networks:
+			-inception
+		environment:
+			- .env
+		restart: always
+		expose:
+			- "9000"
+
+	mariadb:
+		build: requirements/mariadb
+		container_name: mariadb
+		volumes:
+			- 
+		networks:
+			- inception
+		environment:
+			- .env
+		restart: always
+		expose:
+			- "3306"
+networks:
+	inception:
+		driver: bridge #look if really useful
+
