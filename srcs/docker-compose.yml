@@ -8,7 +8,7 @@ services:
 		ports:
 			- 443:443
 		volumes: #wordpress volume
-			- 
+			- www-data:/var/www/html
 		depends_on: #will create wordpress first
 			- wordpress
 		networks:
@@ -21,7 +21,7 @@ services:
 		build: requirements/wordpress
 		container_name: wordpress
 		volumes:
-			-
+			- www-data:/var/www/html
 		depends_on:
 			- mariadb #will create mariadb first
 		networks:
@@ -36,7 +36,7 @@ services:
 		build: requirements/mariadb
 		container_name: mariadb
 		volumes:
-			- 
+			- db-data:/var/lib/mysql
 		networks:
 			- inception
 		environment:
@@ -47,4 +47,6 @@ services:
 networks:
 	inception:
 		driver: bridge #look if really useful
-
+volumes:
+	- db-data:
+	- www-data:
