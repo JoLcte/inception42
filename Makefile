@@ -12,23 +12,28 @@ PURPLE = \033[0;35m
 EOC = \033[m
 # ------------------
 
-YAML=./srcs/docker-compose.yml
+YAML= ./srcs/docker-compose.yml
 
 all: start host run
 
 start: stop0 rm rmi 
-	@docker volumes rm $$(docker volumes ls -q)
+	@echo "$(ON_PURPLE)- Removing all existing volumes... -$(EOC)"
+	@docker volume rm $$(docker volume ls -q) 2> /dev/null || true
+	@echo "$(BCYAN)---> Volumes removing: [DONE]$(EOC)"
+	@echo "$(ON_PURPLE)- Removing all networks... -$(EOC)"
+	@docker network rm $$(docker network ls -q) 2> /dev/null || true
+	@echo "$(BCYAN)---> Networks removing: [DONE]$(EOC)"
 
 host:
-	@echo "$(ON_GREEN)- Modifying hosts file... -$(EOC)"
+	@echo "$(ON_PURPLE)- Modifying hosts file... -$(EOC)"
 	@sudo sed -i "s/localhost/jlecomte.42.fr/g" /etc/hosts
 	@if ! grep -q "jlecomte.42.fr" /etc/hosts; then echo "$(BCYAN)WARNING: Host hasn't been modified$(EOC)";\
 		else echo "$(BCYAN)Host modifed: [OK]$(EOC)"; fi
 
 run:
 	@echo "$(ON_GREEN)- Running Inception ... -$(EOC)"
-	@docker-compose -f $(YAML) up -d --build
-	@echo "$(BCYAN)Inception running: [DONE]$(EOC)"
+	@sudo docker-compose -f $(YAML) up -d --build
+	@echo "$(BCYAN)---> Inception running: [DONE]$(EOC)"
 
 images:
 	@echo "$(ON_BLUE)- Docker Images List: -$(EOC)"
@@ -40,25 +45,27 @@ ps:
 
 volumes:
 	@echo "$(ON_PURPLE)- Docker Volumes List: -$(EOC)"
-	@docker volumes ls
+	@docker volume ls
 
 rm:
 	@echo "$(ON_PURPLE)- Removing all containers... -$(EOC)"
-	@docker rm $$(docker ps -aq)
-	@echo "$(BCYAN)Inception containers removing: [DONE]$(EOC)"
+	@docker rm $$(docker ps -aq) 2> /dev/null || true
+	@echo "$(BCYAN)---> Inception containers removing: [DONE]$(EOC)"
  
 rmi:
 	@echo "$(ON_BLUE)- Removing all images... -$(EOC)"
-	@docker rmi -f $$(docker images -aq)
-	@echo "$(BCYAN)Inception images removing: [DONE]$(EOC)"
+	@docker rmi -f $$(docker images -aq) 2> /dev/null || true
+	@echo "$(BCYAN)---> Images removing: [DONE]$(EOC)"
 	
 stop: 
 	@echo "$(ON_GREEN)- Stopping Inception... -$(EOC)"
 	@docker-compose -f $(YAML) stop
-	@echo "$(BCYAN)Inception stopped: [OK]$(EOC)"
+	@echo "$(BCYAN)---> Inception stopped: [OK]$(EOC)"
 
 stop0:
-	@docker stop $$(docker ps -aq)
+	@echo "$(ON_PURPLE)- Stopping all containers... -$(EOC)"
+	@docker stop $$(docker ps -aq) 2> /dev/null || true
+	@echo "$(BCYAN)---> All containers stopped: [OK]$(EOC)"
 
 clean: stop
 	@docker-compose down -f $(YAML) --volumes
@@ -72,4 +79,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re rmi rm ps images host stop run start
+.PHONY: all clean fclean re rmi rm ps images host stop stop0 run start volumes
