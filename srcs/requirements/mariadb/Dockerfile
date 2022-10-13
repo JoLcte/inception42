@@ -11,6 +11,3 @@ ENTRYPOINT ["bash", "run.sh"]
 
 EXPOSE 3306
 
-# To use bash inside the container
-#CMD bash
-

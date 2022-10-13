@@ -12,9 +12,11 @@ PURPLE = \033[0;35m
 EOC = \033[m
 # ------------------
 
-YAML= ./srcs/docker-compose.yml
+YAML = srcs/docker-compose.yml
 
-all: start host run
+first: host all
+
+all: start run
 
 start: stop0 rm rmi 
 	@echo "$(ON_PURPLE)- Removing all existing volumes... -$(EOC)"
@@ -32,7 +34,7 @@ host:
 
 run:
 	@echo "$(ON_GREEN)- Running Inception ... -$(EOC)"
-	@sudo docker-compose -f $(YAML) up -d --build
+	@docker-compose -f $(YAML) up -d --build
 	@echo "$(BCYAN)---> Inception running: [DONE]$(EOC)"
 
 images:
@@ -68,15 +70,15 @@ stop0:
 	@echo "$(BCYAN)---> All containers stopped: [OK]$(EOC)"
 
 clean: stop
-	@docker-compose down -f $(YAML) --volumes
+	@docker-compose down -f $(YAML) --volumes 2> /dev/null || true
 	@echo "$(BCYAN)Inception containers, networks and volumes removed: [OK]$(EOC)"
 
 fclean: clean 
 	@echo "$(ON_GREEN)- Wiping out every traces of Inception... -$(EOC)"
-	@docker system prune -all --volumes -f
+	@docker system prune -a --volumes -f
 	@echo "$(BCYAN)No more inception: [DONE]$(EOC)"
 	
 
 re: fclean all
 
-.PHONY: all clean fclean re rmi rm ps images host stop stop0 run start volumes
+.PHONY: first all clean fclean re rmi rm ps images host stop stop0 run start volumes
