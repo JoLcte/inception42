@@ -16,7 +16,20 @@ YAML = srcs/docker-compose.yml
 
 first: host all
 
-all: start run
+all: start up
+
+
+ifeq (debug,$(firstword $(MAKECMDGOALS)))
+  # use the rest as arguments for "debug"
+  DEBUG_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # ...and turn them into do-nothing targets
+  $(eval $(DEBUG_ARGS):;@:)
+endif
+
+debug:
+	docker compose -f $(YAML) exec $(DEBUG_ARGS) bash
+
+
 
 start: stop0 rm rmi 
 	@echo "$(ON_PURPLE)- Removing all existing volumes... -$(EOC)"
@@ -32,9 +45,9 @@ host:
 	@if ! grep -q "jlecomte.42.fr" /etc/hosts; then echo "$(BCYAN)WARNING: Host hasn't been modified$(EOC)";\
 		else echo "$(BCYAN)Host modifed: [OK]$(EOC)"; fi
 
-run:
+up:
 	@echo "$(ON_GREEN)- Running Inception ... -$(EOC)"
-	@docker-compose -f $(YAML) up -d --build
+	@docker compose -f $(YAML) up -d --build
 	@echo "$(BCYAN)---> Inception running: [DONE]$(EOC)"
 
 images:
@@ -61,8 +74,13 @@ rmi:
 	
 stop: 
 	@echo "$(ON_GREEN)- Stopping Inception... -$(EOC)"
-	@docker-compose -f $(YAML) stop
+	@docker compose -f $(YAML) stop
 	@echo "$(BCYAN)---> Inception stopped: [OK]$(EOC)"
+
+down: 
+	@echo "$(ON_GREEN)- Putting down Inception... -$(EOC)"
+	@docker compose -f $(YAML) down
+	@echo "$(BCYAN)---> Putting Inception down: [OK]$(EOC)"
 
 stop0:
 	@echo "$(ON_PURPLE)- Stopping all containers... -$(EOC)"
@@ -70,7 +88,7 @@ stop0:
 	@echo "$(BCYAN)---> All containers stopped: [OK]$(EOC)"
 
 clean: stop
-	@docker-compose down -f $(YAML) --volumes 2> /dev/null || true
+	@docker compose down -f $(YAML) --volumes 2> /dev/null || true
 	@echo "$(BCYAN)Inception containers, networks and volumes removed: [OK]$(EOC)"
 
 fclean: clean 

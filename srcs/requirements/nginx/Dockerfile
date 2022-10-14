@@ -29,3 +29,6 @@ RUN	chown -R www-data:www-data /var/www/html
 
 # Nginx first layer so the container wont stop
 CMD	["nginx", "-g", "daemon off;"]
+
+# Nginx bash debug
+#CMD	tail -f
