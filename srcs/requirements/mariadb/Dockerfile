@@ -10,4 +10,3 @@ COPY tools/run.sh		/run.sh
 ENTRYPOINT ["bash", "run.sh"]
 
 EXPOSE 3306
-

@@ -9,21 +9,21 @@ if [! -e /var/www/wordpress/wp-config.php]; then
 	--dbuser=$SQL_USER \
 	--dbpass=$SQL_PASSWORD \
 	--dbhost=mariadb:3306 \
-	--path='/var/www/wordpress'
+	--path='/var/www/html/wordpress'
 
 wp core install --url=$DOMAIN_NAME \
 	 --title=$WP_TITLE \
 	--admin_user=$ADMIN_USER \
 	--admin-password=$ADMIN_PASSWORD \
 	--admin-email=$ADMIN_EMAIL \
-	--path='var/www/wordpress'
+	--path='var/www/html/wordpress'
 
 wp user create --allow-root \
 	$USER_NAME \
 	$USER_EMAIL \
 	--role=author \
 	--user_pass=$USER_PASSWORD \
-	--path='var/www/wordpress' \
+	--path='var/www/html/wordpress' \
 	>> /log.txt
 fi
 

@@ -6,13 +6,13 @@ RUN apt-get update -y && \
 	php-fpm \
 	php-mysql
 
-RUN wget https://fr.wordpress.org/wordpress-6.0.2-fr_FR.tar.gz -P /var/www
-RUN cd /var/www && tar -xzf wordpress-6.0.2-fr_FR.tar.gz && rm wordpress-6.0.2-fr_FR.tar.gz
+RUN wget https://fr.wordpress.org/wordpress-6.0.2-fr_FR.tar.gz -P /var/www/html
+RUN cd /var/www/html && tar -xzf wordpress-6.0.2-fr_FR.tar.gz && rm wordpress-6.0.2-fr_FR.tar.gz
 
 COPY ./conf/php.conf	/etc/php/7.3/fpm/pool.d/www.conf
 
 # Giving root privileges to wordpress directory to be able to write
-RUN chown -R root:root /var/www/wordpress
+RUN chown -R root:root /var/www/html/wordpress
 
 # wp-config.php setup through a CLI
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
