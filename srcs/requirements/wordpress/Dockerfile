@@ -4,7 +4,8 @@ RUN apt-get update -y && \
 	apt-get install wget -y && \
 	apt-get install -y php7.3 \
 	php-fpm \
-	php-mysql
+	php-mysql \
+	mariadb-client
 
 RUN wget https://fr.wordpress.org/wordpress-6.0.2-fr_FR.tar.gz -P /var/www/html
 RUN cd /var/www/html && tar -xzf wordpress-6.0.2-fr_FR.tar.gz && rm wordpress-6.0.2-fr_FR.tar.gz
@@ -21,6 +22,7 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 
 COPY ./tools/run.sh	/run.sh
 
-#ENTRYPOINT ["bash", "run.sh"]
+ENTRYPOINT ["bash", "run.sh"]
 
-CMD tail -f
+#For Debug
+#CMD tail -f

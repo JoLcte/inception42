@@ -3,8 +3,7 @@
 # To make sure mariaDB has time to launch
 sleep 10
 
-if [! -e /var/www/wordpress/wp-config.php]; then
-	wp config create \
+wp config create --allow-root \
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
 	--dbpass=$SQL_PASSWORD \
@@ -14,23 +13,19 @@ if [! -e /var/www/wordpress/wp-config.php]; then
 wp core install --url=$DOMAIN_NAME \
 	 --title=$WP_TITLE \
 	--admin_user=$ADMIN_USER \
-	--admin-password=$ADMIN_PASSWORD \
-	--admin-email=$ADMIN_EMAIL \
+	--admin_password=$ADMIN_PASSWORD \
+	--admin_email=$ADMIN_EMAIL \
 	--path='var/www/html/wordpress'
 
-wp user create \
+wp user create --allow_root \
 	$USER_NAME \
 	$USER_EMAIL \
 	--role=author \
 	--user_pass=$USER_PASSWORD \
-	--path='var/www/html/wordpress' \
-	>> /log.txt
-fi
+	--path='var/www/html/wordpress'
 
 # PHP error handle in case /run/php does not exist
-if [! -d /run/php ]; then
-	mkdir /run/php
-fi
+mkdir /run/php
 
 # Launch php-fpm
 /usr/sbin/php-fpm7.3 -FR
