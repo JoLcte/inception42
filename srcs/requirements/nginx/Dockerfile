@@ -6,7 +6,7 @@ FROM	debian:buster
 
 
 # OS Setup for next steps
-RUN	apt-get update && apt-get -y upgrade && \
+RUN	apt-get update && \
 	apt-get install -y nginx vim curl openssl
 
 # TLS certificates setup

@@ -9,4 +9,8 @@ COPY tools/run.sh		/run.sh
 
 ENTRYPOINT ["bash", "run.sh"]
 
+
+#debug
+#CMD tail -f
+
 EXPOSE 3306

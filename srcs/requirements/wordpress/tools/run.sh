@@ -1,14 +1,16 @@
 #! /bin/sh
 
-# To make sure mariaDB has time to launch
 
-if [! -f /var/www/html/wordpress/wp-config.php]; then
+if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
+	
+	# To make sure mariaDB has time to launch
 
-	until mariadb -h mariadb -u $SQL_USER -p$SQL_PASSWORD ;
+	while [ ! mysqladmin ping -h $SQL_HOST ] ;
 	do
 		sleep 1
 	done
-
+	#sleep 5
+	touch /var/www/html/truc
 	wp config create --allow-root \
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
