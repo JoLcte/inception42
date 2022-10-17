@@ -14,9 +14,7 @@ EOC = \033[m
 
 YAML = srcs/docker-compose.yml
 
-first: host all
-
-all: start up
+all: host start up
 
 
 ifeq (debug,$(firstword $(MAKECMDGOALS)))
@@ -41,7 +39,7 @@ start: stop0 rm rmi
 
 host:
 	@echo "$(ON_PURPLE)- Modifying hosts file... -$(EOC)"
-	@sudo sed -i "s/localhost/jlecomte.42.fr/g" /etc/hosts
+	@if ! grep -q "jlecomte.42.fr" /etc/hosts; then sudo sh -c 'echo "126.0.0.1\tjlecomte.42.fr" >> /etc/hosts'; fi
 	@if ! grep -q "jlecomte.42.fr" /etc/hosts; then echo "$(BCYAN)WARNING: Host hasn't been modified$(EOC)";\
 		else echo "$(BCYAN)Host modifed: [OK]$(EOC)"; fi
 

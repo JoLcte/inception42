@@ -4,7 +4,7 @@
 sleep 10
 
 if [! -e /var/www/wordpress/wp-config.php]; then
-	wp config create --allow-root \
+	wp config create \
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
 	--dbpass=$SQL_PASSWORD \
@@ -18,7 +18,7 @@ wp core install --url=$DOMAIN_NAME \
 	--admin-email=$ADMIN_EMAIL \
 	--path='var/www/html/wordpress'
 
-wp user create --allow-root \
+wp user create \
 	$USER_NAME \
 	$USER_EMAIL \
 	--role=author \
@@ -29,8 +29,8 @@ fi
 
 # PHP error handle in case /run/php does not exist
 if [! -d /run/php ]; then
-	mkdir ./run/php
+	mkdir /run/php
 fi
 
 # Launch php-fpm
-/usr/sbin/php-fpm7.3 -F
+/usr/sbin/php-fpm7.3 -FR

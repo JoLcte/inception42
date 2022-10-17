@@ -11,8 +11,7 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - inception
-    environment:
-      - .env
+    env_file: .env
     restart: always
     expose:
       - "3306"
@@ -27,8 +26,7 @@ services:
       - mariadb #will create mariadb first
     networks:
       - inception
-    environment:
-      - .env
+    env_file: .env
     restart: always
     expose:
       - "9000"
@@ -45,8 +43,7 @@ services:
       - wordpress
     networks:
       - inception
-    environment:
-      - .env
+    env_file: .env
     restart: always #on-failure possible
 
 
