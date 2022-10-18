@@ -20,6 +20,6 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
-COPY --chmod=755 ./tools/run.bash	/run.bash
+COPY --chmod=755 ./tools/wp_setup.bash	/wp_setup.bash
 
-ENTRYPOINT ["./run.bash"]
+ENTRYPOINT ["./wp_setup.bash"]

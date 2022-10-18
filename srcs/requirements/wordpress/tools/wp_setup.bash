@@ -9,7 +9,7 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	do
 		((++i))
 		sleep 1
-		echo -e "$i wordpress failed to connect to mariadb"
+		echo -e "$i Wordpress failed to connect to MariaDB"
 		if [[ i -eq 30 ]]
 		then
 			exit -1
@@ -19,7 +19,7 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
 	--dbpass=$SQL_PASSWORD \
-	--dbhost=mariadb:3306 \
+	--dbhost=$SQL_HOST:$SQL_PORT \
 	--path='/var/www/html/wordpress'
 
 	wp core install --allow-root --url=$DOMAIN_NAME \
