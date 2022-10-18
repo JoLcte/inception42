@@ -14,7 +14,7 @@ EOC = \033[m
 
 YAML = srcs/docker-compose.yml
 
-all: host start up
+all: host up
 
 
 ifeq (debug,$(firstword $(MAKECMDGOALS)))
@@ -29,7 +29,7 @@ debug:
 
 
 
-start: stop0 rm rmi 
+startfresh: stop0 rm rmi 
 	@echo "$(ON_PURPLE)- Removing all existing volumes... -$(EOC)"
 	@docker volume rm $$(docker volume ls -q) 2> /dev/null || true
 	@echo "$(BCYAN)---> Volumes removing: [DONE]$(EOC)"

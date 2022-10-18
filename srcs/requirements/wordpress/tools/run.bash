@@ -1,12 +1,19 @@
-#! /bin/sh
+#! /bin/bash
 
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	
 	# To make sure mariaDB has time to launch
-
-	while ! mariadb -h $SQL_HOST
+	
+	i=0
+	while ! mariadb -h$SQL_HOST -u$SQL_USER -p$SQL_PASSWORD
 	do
+		((++i))
 		sleep 1
+		echo -e "$i wordpress failed to connect to mariadb"
+		if [[ i -eq 30 ]]
+		then
+			exit -1
+		fi
 	done
 	wp config create --allow-root \
 	--dbname=$SQL_DATABASE \

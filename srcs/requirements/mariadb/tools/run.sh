@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # Launching MariaDB server
 service mysql start;

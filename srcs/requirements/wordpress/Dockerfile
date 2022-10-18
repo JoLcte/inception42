@@ -2,7 +2,7 @@ FROM debian:buster
 
 RUN apt-get update -y && \
 	apt-get install wget -y && \
-	apt-get install -y php7.3 \
+	apt-get install php7.3 -y \
 	php-fpm \
 	php-mysql \
 	mariadb-client
@@ -20,9 +20,6 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
-COPY ./tools/run.sh	/run.sh
+COPY --chmod=755 ./tools/run.bash	/run.bash
 
-ENTRYPOINT ["bash", "run.sh"]
-
-#For Debug
-#CMD tail -f
+ENTRYPOINT ["./run.bash"]
