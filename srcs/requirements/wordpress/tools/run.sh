@@ -1,16 +1,13 @@
 #! /bin/sh
 
-
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	
 	# To make sure mariaDB has time to launch
 
-	while [ ! mysqladmin ping -h $SQL_HOST ] ;
+	while ! mariadb -h $SQL_HOST
 	do
 		sleep 1
 	done
-	#sleep 5
-	touch /var/www/html/truc
 	wp config create --allow-root \
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
@@ -34,7 +31,9 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 fi
 
 # PHP error handle in case /run/php does not exist
-mkdir /run/php
+if [ ! -d /run/php ]; then
+	mkdir /run/php
+fi
 
 # Launch php-fpm
 /usr/sbin/php-fpm7.3 -FR
