@@ -6,7 +6,8 @@ RUN apt-get update -y && \
 	php-fpm \
 	php-mysql \
 	sudo \
-	mariadb-client
+	mariadb-client \
+	redis
 
 RUN wget https://fr.wordpress.org/wordpress-6.0.2-fr_FR.tar.gz -P /var/www/html
 RUN cd /var/www/html && tar -xzf wordpress-6.0.2-fr_FR.tar.gz && rm wordpress-6.0.2-fr_FR.tar.gz
