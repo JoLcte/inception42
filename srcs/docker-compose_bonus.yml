@@ -1,0 +1,66 @@
+#version: '3.8'
+version: '3'
+
+services:
+  
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    build: requirements/mariadb
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - inception
+    env_file: env/.env_db
+    restart: always
+    expose:
+      - "3306"
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    build: requirements/wordpress
+    volumes:
+       - www-data:/var/www/html/wordpress
+    depends_on:
+      - mariadb #will create mariadb first
+    networks:
+      - inception
+    env_file: env/.env_wp
+    restart: always
+    expose:
+      - "9000"
+  
+  nginx:
+    image: nginx
+    container_name: nginx
+    build: requirements/nginx
+    ports:
+      - 443:443
+    volumes: #wordpress volume
+      - www-data:/var/www/html/wordpress
+    depends_on: #will create wordpress first
+      - wordpress
+    networks:
+      - inception
+    restart: always #on-failure possible
+
+  redis:
+    image: redis
+    container_name: redis
+    build: requirements/bonus/redis
+    ports: "6379:6379"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+
+
+networks:
+  inception:
+    driver: bridge #look if really useful
+
+volumes:
+  db-data:
+  www-data:
