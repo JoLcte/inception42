@@ -15,26 +15,32 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 			exit -1
 		fi
 	done
-	wp config create --allow-root \
+	sudo -u www-data wp config create \
 	--dbname=$SQL_DATABASE \
 	--dbuser=$SQL_USER \
 	--dbpass=$SQL_PASSWORD \
 	--dbhost=$SQL_HOST:$SQL_PORT \
 	--path='/var/www/html/wordpress'
 
-	wp core install --allow-root --url=$DOMAIN_NAME \
+	sudo -u www-data wp core install
+	 --url=$DOMAIN_NAME \
 	 --title=$WP_TITLE \
 	--admin_user=$ADMIN_USER \
 	--admin_password=$ADMIN_PASSWORD \
 	--admin_email=$ADMIN_EMAIL \
 	--path='var/www/html/wordpress'
 
-	wp user create --allow_root \
+	sudo -u www-data wp user create \
 	$USER_NAME \
 	$USER_EMAIL \
 	--role=author \
 	--user_pass=$USER_PASSWORD \
-	--path='var/www/html/wordpress'
+	--path='/var/www/html/wordpress'
+
+	# For Redis Bonus Service
+	sudo -u www-data wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME \
+	--path='/var/www/html/wordpress' \
+
 fi
 
 # PHP error handle in case /run/php does not exist
