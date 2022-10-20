@@ -42,8 +42,8 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	sudo -u www-data wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME
 	sudo -u www-data wp config set WP_REDIS_HOST $REDIS_HOST
 	sudo -u www-data wp config set WP_REDIS_PORT $REDIS_PORT
-	sudo -u www-data wp plugin install redis-cache --activate --path='/var/www/html/wordpress' -> already activated and installed
-	sudo -u www-data wp plugin update --all --path='/var/www/html/wordpress' -> already updated
+	sudo -u www-data wp plugin install redis-cache --activate --path='/var/www/html/wordpress'
+	sudo -u www-data wp plugin update --all --path='/var/www/html/wordpress'
 fi
 
 # PHP error handle in case /run/php does not exist
@@ -52,7 +52,7 @@ if [ ! -d /run/php ]; then
 fi
 
 # Launch redis
-sudo -u www-data wp redis enable --path='/var/wwww/html/wordpress'
+sudo -u www-data wp redis enable --path='/var/www/html/wordpress'
 
 # Launch php-fpm
 /usr/sbin/php-fpm7.3 -FR
