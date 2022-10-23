@@ -36,7 +36,7 @@ services:
     container_name: nginx
     build: requirements/nginx
     ports:
-      - 443:443
+      - "443:443"
     volumes: #wordpress volume
       - www-data:/var/www/html/wordpress
     depends_on: #will create wordpress first
@@ -57,6 +57,20 @@ services:
       - inception
     restart: always
 
+  ftp_server:
+    image: ftp_server
+    container_name: ftp_server
+    build: requirements/bonus/ftp_server
+    #ports:
+      # - "20:20"
+    volumes:
+      - www-data:/var/www/html/wordpress
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    env_file: env/.env_ftp
+    restart: always
 
 networks:
   inception:
