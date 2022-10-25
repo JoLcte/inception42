@@ -66,11 +66,21 @@ services:
        - "5000-5010:5000-5010"
     volumes:
       - www-data:/var/www/html/wordpress
-    #depends_on:
-     # - wordpress
     networks:
       - inception
     env_file: env/.env_ftp
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    build: requirements/bonus/adminer
+    #ports:
+       #- "???:???"
+    #volumes:
+     # - www-data:/var/www/html/wordpress
+    networks:
+      - inception
     restart: always
 
 networks:
