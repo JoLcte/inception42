@@ -11,9 +11,8 @@ RUN	openssl req -new -x509 -sha256 -days 365 -nodes \
 	-keyout /etc/ssl/private/vsftpd.key.pem \
 	-subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=jlecomte.42.fr/UID=jlecomte"
 
-# utilite HAS TO BE CHECKED
-#RUN	chown root:root /etc/ssl/private/vsftpd.cert.*
-#RUN	chmod 600 /etc/ssl/private/vsftpd.cert.*
+# Changing rights for the SSL certificate only rw for root
+RUN	chmod 600 /etc/ssl/private/vsftpd.cert.*
 
 ENTRYPOINT	["./ftp_setup.bash"] 
 

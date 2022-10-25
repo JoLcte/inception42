@@ -61,12 +61,13 @@ services:
     image: ftp_server
     container_name: ftp_server
     build: requirements/bonus/ftp_server
-    #ports:
-      # - "20:20"
+    ports:
+       - "21:21"
+       - "5000-5010:5000-5010"
     volumes:
       - www-data:/var/www/html/wordpress
-    depends_on:
-      - wordpress
+    #depends_on:
+     # - wordpress
     networks:
       - inception
     env_file: env/.env_ftp
