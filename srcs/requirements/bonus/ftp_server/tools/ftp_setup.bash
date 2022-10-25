@@ -22,8 +22,6 @@ if [ ! -f "/etc/vsftpd.conf.backup" ]; then
 	#put FTP_USER in chroot_list
 	echo $FTP_USER | tee -a /etc/vsftpd.chroot_list
 	
-# Make a directory for jail
-	mkdir -p /wp_ftp && chown $FTP_ADMIN /wp_ftp
 fi
 
 echo "FTP started on :21"
