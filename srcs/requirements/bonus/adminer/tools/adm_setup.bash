@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [ ! f " /etc/php/7.3/fpm/pool.d/www.conf.backup" ]; then
+if [ ! -f " /etc/php/7.3/fpm/pool.d/www.conf.backup" ]; then
 	cp /etc/php/7.3/fpm/pool.d/www.conf /etc/php/7.3/fpm/pool.d/www.conf.backup
 	mv /tmp/php.conf /etc/php/7.3/fpm/pool.d/www.conf
 fi
