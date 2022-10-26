@@ -80,8 +80,6 @@ services:
     image: adminer
     container_name: adminer
     build: requirements/bonus/adminer
-    #ports:
-       #- "???:???"
     volumes:
       - www-data:/var/www/html
     networks:

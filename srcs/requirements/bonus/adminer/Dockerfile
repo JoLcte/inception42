@@ -1,10 +1,9 @@
 FROM	debian:buster
 
-#RUN	apt-get update -y && apt install -y wget
+RUN	apt-get update -y && apt install -y wget php7.3 php-fpm php-mysql
 
-#RUN	wget http://www.adminer.org/latest.php -O /var/www/html/adminer.php
+COPY	./conf/php.conf /tmp/.
+COPY	--chmod=755 ./tools/adm_setup.bash /tmp/adm_setup.bash
 
-#RUN	chown -R www-data:www-data /var/www/html/adminer.php
-#RUN	chmod 755 /var/www/html/adminer.php
-
-CMD tail -f
+ENTRYPOINT ["./tmp/adm_setup.bash"]
+#CMD tail -f
