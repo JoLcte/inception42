@@ -44,6 +44,11 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 	sudo -u www-data wp config set WP_REDIS_PORT $REDIS_PORT
 	sudo -u www-data wp plugin install redis-cache --activate --path='/var/www/html/wordpress'
 	sudo -u www-data wp plugin update --all --path='/var/www/html/wordpress'
+
+	# To give rights to write files with ftp
+    	find /var/www/html/wordpress -type d -exec chmod 775 {} +
+    	find /var/www/html/wordpress -type f -exec chmod 664 {} + 
+
 fi
 
 # PHP error handle in case /run/php does not exist

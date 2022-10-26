@@ -10,10 +10,7 @@ RUN apt-get update -y && \
 	redis
 
 RUN wget https://fr.wordpress.org/wordpress-6.0.2-fr_FR.tar.gz -P /var/www/html/
-RUN cd /var/www/html/ && \
-	tar -xzf wordpress-6.0.2-fr_FR.tar.gz && \
-	rm wordpress-6.0.2-fr_FR.tar.gz && \
-	find wordpress -type d -exec chmod 775 {} +
+RUN cd /var/www/html/ && tar -xzf wordpress-6.0.2-fr_FR.tar.gz && rm wordpress-6.0.2-fr_FR.tar.gz
 
 COPY ./conf/php.conf	/etc/php/7.3/fpm/pool.d/www.conf
 

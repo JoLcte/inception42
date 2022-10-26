@@ -24,7 +24,7 @@ if [ ! -f "/etc/vsftpd.conf.backup" ]; then
 	#put FTP_USER in chroot_list
 	echo $FTP_USER | tee -a /etc/vsftpd.chroot_list
 	usermod -a -G www-data $FTP_USER
-	
+
 fi
 
 echo "FTP started on :21"
