@@ -152,7 +152,7 @@ down_bonus:
 	@echo "$(BCYAN)---> Putting Inception BONUS down: [OK]$(EOC)"
 	
 clean_bonus: down_bonus
-	@docker compose down -f $(YAML-BONUS) --volumes 2> /dev/null || true
+	@docker volume rm $$(docker volume ls -q) 2> /dev/null || true
 	@echo "$(BCYAN)Inception BONUS containers, networks and volumes removed: [OK]$(EOC)"
 
 fclean_bonus: clean_bonus
@@ -161,6 +161,8 @@ fclean_bonus: clean_bonus
 	@echo "$(BCYAN)No more inception: [DONE]$(EOC)"
 	
 re_bonus: fclean_bonus host up_bonus
+
+restart: clean_bonus up_bonus
 
 # ------------------------
 

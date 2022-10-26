@@ -13,6 +13,8 @@ if [ ! -f "/etc/vsftpd.conf.backup" ]; then
 	echo "$FTP_ADMIN:$FTP_ADMIN_PWD" | /usr/sbin/chpasswd
 	# add FTP_ADMIN to the userlist
 	echo $FTP_ADMIN | tee -a /etc/vsftpd.userlist
+	# add FTP_ADMIN to www-data group
+	usermod -a -G www-data $FTP_ADMIN
 
 # ADD user FTP_USER and put it in jail
 	
@@ -21,6 +23,7 @@ if [ ! -f "/etc/vsftpd.conf.backup" ]; then
 	echo $FTP_USER | tee -a /etc/vsftpd.userlist
 	#put FTP_USER in chroot_list
 	echo $FTP_USER | tee -a /etc/vsftpd.chroot_list
+	usermod -a -G www-data $FTP_USER
 	
 fi
 
