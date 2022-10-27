@@ -39,7 +39,9 @@ services:
       - "443:443"
     volumes:
       - www-data:/var/www/html
+      - ntp-data:/var/ntp
     depends_on: #will create wordpress first
+      - ntp
       - wordpress
       - adminer
     networks:
@@ -86,6 +88,18 @@ services:
       - inception
     restart: unless-stopped
 
+  ntp:
+    image: ntp
+    container_name: ntp
+    build: requirements/bonus/ntp
+    ports:
+      - "123:123/udp"
+    volumes: 
+      - ntp-data:/var/ntp
+    networks:
+      - inception
+    restart: unless-stopped
+
 networks:
   inception:
     driver: bridge #look if really useful
@@ -93,3 +107,4 @@ networks:
 volumes:
   db-data:
   www-data:
+  ntp-data:

@@ -4,7 +4,7 @@ FROM	debian:buster
 
 # OS Setup for next steps
 RUN	apt-get update && \
-	apt-get install -y nginx vim curl openssl
+	apt-get install -y nginx vim curl openssl ntp
 
 # TLS certificates setup
 RUN	mkdir -p /etc/nginx/ssl && \
@@ -16,6 +16,8 @@ RUN	mkdir -p /etc/nginx/ssl && \
 # Configuration files handle
 RUN	mkdir -p /var/run/nginx
 COPY	conf/nginx.conf /etc/nginx/nginx.conf
+COPY	conf/ntp.conf /tmp/ntp.conf
+COPY	--chmod=755 ./tools/nginx_setup.bash /.
 
 # Ports
 EXPOSE	443:443
@@ -25,5 +27,6 @@ RUN	chmod 755 /var/www/html
 RUN	chown -R www-data:www-data /var/www/html
 
 # Nginx first layer so the container wont stop
-CMD	["nginx", "-g", "daemon off;"]
+#CMD	["nginx", "-g", "daemon off;"]
 
+ENTRYPOINT ["./nginx_setup.bash"]
