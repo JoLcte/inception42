@@ -6,6 +6,8 @@ if [ ! -f "/etc/ntp.conf.backup" ]; then
 	echo -n "server " > /var/ntp/ip_cmd
 	hostname -I  | tr '\n' ' ' >> /var/ntp/ip_cmd
 	echo "iburst" >> /var/ntp/ip_cmd
+
+	echo -e "broadcast $(ip addr | grep eth0 | grep brd | awk '{print $4}')" >> /etc/ntp.conf
 	
 fi
 

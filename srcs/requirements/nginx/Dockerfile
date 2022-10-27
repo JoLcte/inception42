@@ -4,7 +4,7 @@ FROM	debian:buster
 
 # OS Setup for next steps
 RUN	apt-get update && \
-	apt-get install -y nginx vim curl openssl ntp
+	apt-get install -y nginx vim curl openssl ntp dnsutils
 
 # TLS certificates setup
 RUN	mkdir -p /etc/nginx/ssl && \
