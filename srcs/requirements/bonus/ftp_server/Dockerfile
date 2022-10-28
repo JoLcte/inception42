@@ -18,6 +18,3 @@ RUN	openssl req -new -x509 -sha256 -days 365 -nodes \
 RUN	chmod 600 /etc/ssl/private/vsftpd.cert.*
 
 ENTRYPOINT	["./ftp_setup.bash"] 
-
-# For testing
-#CMD tail -f

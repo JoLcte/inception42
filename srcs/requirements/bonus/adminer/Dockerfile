@@ -6,4 +6,3 @@ COPY	./conf/php.conf /tmp/.
 COPY	--chmod=755 ./tools/adm_setup.bash /tmp/adm_setup.bash
 
 ENTRYPOINT ["./tmp/adm_setup.bash"]
-#CMD tail -f
