@@ -12,7 +12,7 @@ services:
     networks:
       - inception
     env_file: env/.env_db
-    restart: always
+    restart: unless-stopped
     expose:
       - "3306"
 
@@ -21,13 +21,13 @@ services:
     container_name: wordpress
     build: requirements/wordpress
     volumes:
-       - www-data:/var/www/html/wordpress
+       - www-data:/var/www/html/
     depends_on:
       - mariadb #will create mariadb first
     networks:
       - inception
     env_file: env/.env_wp
-    restart: always
+    restart: unless-stopped
     expose:
       - "9000"
   
@@ -36,16 +36,69 @@ services:
     container_name: nginx
     build: requirements/nginx
     ports:
-      - 443:443
-    volumes: #wordpress volume
-      - www-data:/var/www/html/wordpress
+      - "443:443"
+    volumes:
+      - www-data:/var/www/html
+      - ntp-data:/var/ntp
     depends_on: #will create wordpress first
+      - ntp
+      - wordpress
+      - adminer
+    networks:
+      - inception
+    restart: unless-stopped
+
+  redis:
+    image: redis
+    container_name: redis
+    build: requirements/bonus/redis
+    ports: 
+      - "6379:6379"
+    depends_on:
       - wordpress
     networks:
       - inception
-    restart: always #on-failure possible
+    restart: unless-stopped
 
+  ftp_server:
+    image: ftp_server
+    container_name: ftp_server
+    build: requirements/bonus/ftp_server
+    ports:
+       - "21:21"
+       - "5000-5010:5000-5010"
+    depends_on:
+       - wordpress
+    volumes:
+      - www-data:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    env_file: env/.env_ftp
+    restart: unless-stopped
 
+  adminer:
+    image: adminer
+    container_name: adminer
+    build: requirements/bonus/adminer
+    volumes:
+      - www-data:/var/www/html
+    networks:
+      - inception
+    restart: unless-stopped
+
+  ntp:
+    image: ntp
+    container_name: ntp
+    build: requirements/bonus/ntp
+    ports:
+      - "123:123/udp"
+    volumes: 
+      - ntp-data:/var/ntp
+    networks:
+      - inception
+    restart: unless-stopped
 
 networks:
   inception:
@@ -54,3 +107,4 @@ networks:
 volumes:
   db-data:
   www-data:
+  ntp-data:
